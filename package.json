@@ -1,0 +1,14 @@
+{
+  "name": "JS_DSA_Server",
+  "version": "1.0.0",
+  "description": "this is the learning for DSA in JavaScript (Open API)",
+  "main": "Server.ts",
+  "repository": "https://github.com/Ramraghul/JS_DSA_Server.git",
+  "author": "Raghul",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.18.2"
+  }
+}
