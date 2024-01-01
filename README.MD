@@ -26,10 +26,12 @@ JS_DSA_Server is an open-source project for learning Data Structures and Algorit
    cd JS_DSA_Server
 
 2. Install dependencies:
-    ````yarn install
+    ````
+    yarn install
 
 3. Start the server:
-    ````yarn start
+    ````
+    yarn start
 
 4. Access the API:
 
