@@ -1,14 +1,49 @@
 {
   "name": "JS_DSA_Server",
   "version": "1.0.0",
-  "description": "this is the learning for DSA in JavaScript (Open API)",
-  "main": "Server.ts",
-  "repository": "https://github.com/Ramraghul/JS_DSA_Server.git",
+  "description": "This is the learning for DSA in JavaScript (Open API)",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Ramraghul/JS_DSA_Server.git"
+  },
   "author": "Raghul",
   "license": "MIT",
   "private": true,
+  "scripts": {
+    "start": "nodemon ./src/Server.ts",
+    "build": "tsc",
+    "dev": "nodemon ./src/Server.ts"
+  },
   "dependencies": {
-    "cors": "^2.8.5",
-    "express": "^4.18.2"
-  }
+    "body-parser": "^1.20.2",
+    "chalk": "4.0.0",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "mongoose": "^8.0.3",
+    "morgan": "^1.10.0",
+    "multer": "^1.4.5-lts.1"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/morgan": "^1.9.9",
+    "nodemon": "^3.0.2",
+    "typescript": "^5.3.3"
+  },
+  "keywords": [
+    "JavaScript",
+    "DSA",
+    "Express",
+    "Node.js",
+    "TypeScript"
+  ],
+  "engines": {
+    "node": ">=14.0.0",
+    "npm": ">=6.0.0"
+  },
+  "include": [
+    "src/*.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }
