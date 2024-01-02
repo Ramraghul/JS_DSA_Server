@@ -1,6 +1,9 @@
+// Required Package Import
 import { Request, Response } from 'express';
 import { numeral } from '../../config/Js/common.config';
 
+
+//Main Js Controller;
 const jsController = {
 
     //Palindrome Check Controller;
@@ -97,7 +100,10 @@ const jsController = {
             console.error('Error:', error);
             res.status(500).json({ error: 'Internal Server Error' });
         }
-    }
+    },
+
+
 };
+
 
 export default jsController;

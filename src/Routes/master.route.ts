@@ -6,7 +6,14 @@ import jsRoute from '../Routes/Js/Js.Router';
 
 // API Version Checking API
 route.get("/", (req: Request, res: Response) => {
-    res.send("Welcome to the API version 1!");
+    try {
+        return res.status(200).json({
+            status:true,
+            message:'Welcome to the API version 1!'
+        })
+    } catch (error) {
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
 });
 
 

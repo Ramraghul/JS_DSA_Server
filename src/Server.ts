@@ -4,6 +4,8 @@ import logger from 'morgan';
 import bodyParser from 'body-parser';
 import chalk from 'chalk';
 import Route from './Routes/master.route';
+import swaggerUi from 'swagger-ui-express';
+import { swaggerSpec } from './Doc/Swagger/Js/Js.swagger';
 require('dotenv').config();
 
 const app = express();
@@ -36,8 +38,14 @@ app.use(bodyParser.json());
 // Corrected mounting of the router
 app.use('/api/v1', Route);
 
+//Swagger Doc;
+app.use('/api_doc', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
 // Start the server
 const PORT = process.env.PORT || 3000;
+
 app.listen(PORT, () => {
     console.log(`Server is running on ${chalk.blueBright(`http://localhost:${PORT}`)}`);
+    console.log(`Swagger Doc running on ${chalk.yellowBright(`http://localhost:${PORT}/api_doc`)}`);
+    console.log(`Press ${chalk.redBright('Ctrl + C')} to Stop this Server`);
 });
