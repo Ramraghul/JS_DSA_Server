@@ -1,5 +1,5 @@
 // Required Package Import
-import express from 'express';
+import express, { Request, Response } from 'express';
 import logger from 'morgan';
 import bodyParser from 'body-parser';
 import chalk from 'chalk';
@@ -34,6 +34,18 @@ app.use(logger((tokens, req, res) => {
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+
+//Check Backend Working Or Not and Welcome Message;
+app.get("/", (req: Request, res: Response) => {
+    try {
+        return res.status(200).json({
+            status: true,
+            message: 'Welcome to JavaScript Data Structures And Algorithms Server'
+        });
+    } catch (error) {
+        return res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
 
 // Corrected mounting of the router
 app.use('/api/v1', Route);
