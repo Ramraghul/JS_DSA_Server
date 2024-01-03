@@ -7,6 +7,8 @@ import { JsController } from "../../Controllers/index.controller";
 route.post('/palindrome', JsController.palindrome);
 
 //Number To Roman Numeral Converter;
-route.post('/romanNumeral',JsController.romanNumeral);
+route.post('/romanNumeral', JsController.romanNumeral);
 
+//Caesar Cipher Encryption and Decryption;
+route.post('/caesarCipher', JsController.caesarCipher);
 export default route;

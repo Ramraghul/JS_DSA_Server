@@ -19,6 +19,7 @@ const advancedConfig = {
     enableCors: true,
     enableCompression: true,
     enableHelmet: true,
+    enableLogDetection: true,
     environment: process.env.NODE_ENV || 'development',
 };
 
@@ -28,27 +29,35 @@ if (advancedConfig.environment === 'production') {
 }
 
 // Apply advanced configuration
-if (advancedConfig.enableCors) app.use(cors({ origin: '*' }));
-if (advancedConfig.enableCompression) app.use(compression());
-if (advancedConfig.enableHelmet) app.use(helmet());
+if (advancedConfig.enableCors) {
+    // Use a more specific CORS configuration
+    const corsOptions = {
+        origin: '*',
+        methods: 'GET,HEAD,PUT,PATCH,POST',
+        credentials: true,
+        optionsSuccessStatus: 204,
+    };
+    app.use(cors(corsOptions));
+}
 
-// Log Detection Middleware
-app.use(async (req, res, next) => {
-    try {
-        const clientIP = requestIp.getClientIp(req) || 'N/A';
-        const response = await axios.get(`${process.env.GET_USER_IP}/${clientIP}/json`);
-        const location = response.data.loc || 'N/A';
+if (advancedConfig.enableCompression) {
+    app.use(compression());
+}
 
+if (advancedConfig.enableHelmet) {
+    app.use(helmet());
+}
+
+if (advancedConfig.enableLogDetection) {
+    app.use(async (req, res, next) => {
         console.log(
             `[${chalk.blueBright(new Date().toLocaleString())}] ` +
-            `${chalk.green(req.method)} ${chalk.cyan(req.url)} from ${chalk.yellow(clientIP)} (${chalk.magenta(location)})`
-        );        
+            `${chalk.green(req.method)} ${chalk.cyan(req.url)}`
+        );
         next();
-    } catch (error) {
-        console.error(error);
-        next();
-    }
-});
+    });
+}
+
 
 // Logger Middleware
 app.use(logger((tokens, req, res) => {
