@@ -1,0 +1,1 @@
+export { default as JsSwaggerSpec } from './Js/Js.swagger';

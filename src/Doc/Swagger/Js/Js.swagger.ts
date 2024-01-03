@@ -272,8 +272,6 @@ const option = {
     ]
 };
 
-export const swaggerSpec = swaggerJsdoc(option);
+export const JsSwagger = swaggerJsdoc(option);
 
-module.exports = {
-    swaggerSpec
-};
+export default JsSwagger;
