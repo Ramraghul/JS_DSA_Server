@@ -8,9 +8,9 @@ import { JsSwaggerSpec } from './Doc/Swagger/master.swagger';
 import cors from 'cors';
 import compression from 'compression';
 import helmet from 'helmet';
-import axios from 'axios';
-import requestIp from 'request-ip';
-require('dotenv').config();
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const app = express();
 
@@ -21,6 +21,7 @@ const advancedConfig = {
     enableHelmet: true,
     enableLogDetection: true,
     environment: process.env.NODE_ENV || 'development',
+    port: process.env.PORT || 3000
 };
 
 // Apply environment-specific configuration
@@ -49,7 +50,7 @@ if (advancedConfig.enableHelmet) {
 }
 
 if (advancedConfig.enableLogDetection) {
-    app.use(async (req, res, next) => {
+    app.use((req, res, next) => {
         console.log(
             `[${chalk.blueBright(new Date().toLocaleString())}] ` +
             `${chalk.green(req.method)} ${chalk.cyan(req.url)}`
@@ -58,16 +59,14 @@ if (advancedConfig.enableLogDetection) {
     });
 }
 
-
 // Logger Middleware
 app.use(logger((tokens, req, res) => {
     const method = chalk.bold(tokens.method(req, res));
     const url = chalk.italic.grey(tokens.url(req, res));
     const status = tokens.status?.(req, res);
-    const statusColor =
-        typeof status === 'string'
-            ? status >= '500' ? chalk.red(status) : status >= '400' ? chalk.yellow(status) : status >= '300' ? chalk.cyan(status) : chalk.green(status)
-            : chalk.green(status);
+    const statusColor = (typeof status === 'string')
+        ? (status >= '500' ? chalk.red(status) : status >= '400' ? chalk.yellow(status) : status >= '300' ? chalk.cyan(status) : chalk.green(status))
+        : chalk.green(status);
     const responseTime = chalk.hex('#ff6348')(tokens['response-time'](req, res) + ' ms');
     const contentLength = chalk.hex('#2ed573')(tokens.res(req, res, 'content-length'));
 
@@ -80,6 +79,7 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
     res.status(500).json({ error: 'Internal Server Error' });
 });
 
+// Body Parser Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
@@ -98,10 +98,8 @@ app.use('/api/v1', Route);
 app.use('/api_doc', swaggerUi.serve, swaggerUi.setup(JsSwaggerSpec));
 
 // Start the server
-const PORT = process.env.PORT || 3000;
-
-app.listen(PORT, () => {
-    console.log(`Server is running on ${chalk.blueBright(`http://localhost:${PORT}`)}`);
-    console.log(`Swagger Doc running on ${chalk.yellowBright(`http://localhost:${PORT}/api_doc`)}`);
+app.listen(advancedConfig.port, () => {
+    console.log(`Server is running on ${chalk.blueBright(`http://localhost:${advancedConfig.port}`)}`);
+    console.log(`Swagger Doc running on ${chalk.yellowBright(`http://localhost:${advancedConfig.port}/api_doc`)}`);
     console.log(`Press ${chalk.redBright('Ctrl + C')} to Stop this Server`);
 });
