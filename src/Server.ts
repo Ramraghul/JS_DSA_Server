@@ -13,6 +13,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const app = express();
+const Token  = 'Testing Token'
 
 // Advanced Configuration
 const advancedConfig = {
@@ -83,11 +84,14 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-// Check Backend Working Or Not and Welcome Message
+// Check Backend Working Or Not and Welcome Message And Bearer Token For API
 app.get("/", (req: Request, res: Response) => {
     res.status(200).json({
         status: true,
         message: 'Welcome to JavaScript Data Structures And Algorithms Server',
+        data:{
+            bearer_token:`${Token}`
+        }
     });
 });
 
@@ -101,5 +105,6 @@ app.use('/api_doc', swaggerUi.serve, swaggerUi.setup(JsSwaggerSpec));
 app.listen(advancedConfig.port, () => {
     console.log(`Server is running on ${chalk.blueBright(`http://localhost:${advancedConfig.port}`)}`);
     console.log(`Swagger Doc running on ${chalk.yellowBright(`http://localhost:${advancedConfig.port}/api_doc`)}`);
+    console.log(`Your API Token Is ${chalk.magentaBright(Token)}`);
     console.log(`Press ${chalk.redBright('Ctrl + C')} to Stop this Server`);
 });

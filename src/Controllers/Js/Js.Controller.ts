@@ -1,6 +1,6 @@
 // Required Package Import
 import { Request, Response } from 'express';
-import { numeral } from '../../config/Js/common.config';
+import { numeral, alphabet } from '../../config/Js/common.config';
 
 
 //Main Js Controller;
@@ -105,33 +105,56 @@ const jsController = {
     //Caesar Cipher Encryption and Decryption;
     async caesarCipher(req: Request, res: Response) {
         try {
-            const data: { value?: number | string, type?: string } = req.body;
+            const data: { value?: number | string, type?: string, shift?: number | undefined } = req.body;
             const inputValue: string | number | undefined = data.value;
 
             // Check if data is missing or value is not provided
-            if (!data || !data.value || !data.type) {
+            if (!data || data.value === undefined || data.type === undefined || data.shift === undefined) {
+                const missingValue = !data.value ? 'value' : !data.type ? 'type' : 'shift';
                 return res.status(400).json({
                     status: false,
-                    message: 'Bad Request || Provide a valid value or Type in the request body',
+                    message: `Bad Request Need To Provide a valid ${missingValue} in the request body`,
                 });
             }
 
             // Measure the start time
             const startTime: [number, number] = process.hrtime();
 
-            //Caesar Cipher Encryption and Decryption for String
-            if (typeof (data.value) === 'string' && data.type === 'encrypt') {
+            //Get Object Key Values From Alphabet
+            let alphabetKey: string = Object.keys(alphabet).join('');
 
+            //Initial Values
+            let encrypt: string = '';
+
+            let decrypt: string = '';
+
+            // Caesar Cipher Encryption and Decryption for string
+            if (typeof data.value === 'string') {
+                for (let i = 0; i < data.value.length; i++) {
+                    const char = data.value[i];
+                    if (data.type === 'encrypt') {
+                        // Encryption logic for string
+                        const charIndex = alphabetKey.indexOf(char);
+                        const encryptedIndex = (charIndex + (data.shift ?? 13)) % alphabetKey.length;
+                        const encryptedChar = alphabetKey[encryptedIndex];
+                        encrypt += char === ' ' ? ' ' : encryptedChar;
+                    } else if (data.type === 'decrypt') {
+                        // Decryption logic for string
+                        const charIndex = alphabetKey.indexOf(char);
+                        const decryptedIndex = (charIndex - (data.shift ?? 13) + alphabetKey.length) % alphabetKey.length;
+                        const decryptedChar = alphabetKey[decryptedIndex];
+                        decrypt += char === ' ' ? ' ' : decryptedChar;
+                    }
+                }
             }
-            else if (typeof (data.value) === 'string' && data.type === 'decrypt') {
 
-            }
-            //Caesar Cipher Encryption and Decryption for number
-            if (typeof (data.value) === 'number' && data.type === 'encrypt') {
+            // Caesar Cipher Encryption and Decryption for number
+            else if (typeof data.value === 'number') {
+                if (data.type === 'encrypt') {
 
-            }
-            else if (typeof (data.value) === 'number' && data.type === 'decrypt') {
+                } else if (data.type === 'decrypt') {
 
+                }
             }
 
             // Measure the end time
@@ -146,7 +169,7 @@ const jsController = {
                 message: 'Data received successfully',
                 data: {
                     input: inputValue,
-                    // romanNumeral: result,
+                    [`caesar_cipher_${data.type}`]: data.type === 'encrypt' ? encrypt : decrypt,
                     solvedTime: `${solvedTime} ms`,
 
                 },
