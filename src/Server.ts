@@ -9,6 +9,7 @@ import cors from 'cors';
 import compression from 'compression';
 import helmet from 'helmet';
 import dotenv from 'dotenv';
+import path from 'path';
 
 dotenv.config();
 
@@ -85,7 +86,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 // Check Backend Working Or Not and Welcome Message And Bearer Token For API
-app.get("/", (req: Request, res: Response) => {
+app.get("/welcome", (req: Request, res: Response) => {
     res.status(200).json({
         status: true,
         message: 'Welcome to JavaScript Data Structures And Algorithms Server',
@@ -98,8 +99,16 @@ app.get("/", (req: Request, res: Response) => {
 // Mount the router
 app.use('/api/v1', Route);
 
+//Swagger Css Direct Access
+app.use('/swagger-ui-assets', express.static(path.join(__dirname, '../node_modules/swagger-ui-dist')));
+
 // Swagger Doc
-app.use('/api_doc', swaggerUi.serve, swaggerUi.setup(JsSwaggerSpec));
+app.use(
+    '/',
+    swaggerUi.serveFiles(JsSwaggerSpec),
+    swaggerUi.setup(JsSwaggerSpec, { explorer: true, swaggerOptions: { url: '/swagger-ui-assets/swagger.json' } })
+);
+
 
 // Start the server
 app.listen(advancedConfig.port, () => {
