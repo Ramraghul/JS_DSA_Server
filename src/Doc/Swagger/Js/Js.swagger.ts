@@ -23,7 +23,7 @@ const option = {
                 description: 'Development Server'
             },
             {
-                url: process.env.LIVE_URL,
+                url: 'https://js-dsa-server.vercel.app',
                 description: 'Production Server'
             }
         ],
