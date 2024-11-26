@@ -149,7 +149,7 @@ const option = {
                                     }
                                 }
                             }
-                        },                        
+                        },
                         '500': {
                             description: 'Server Side Issue',
                             content: {
@@ -240,7 +240,7 @@ const option = {
                                     }
                                 }
                             }
-                        },                        
+                        },
                         '500': {
                             description: 'Server Side Issue',
                             content: {
@@ -254,6 +254,172 @@ const option = {
                         }
                     }
                 }
+            },
+            [`/${BaseUrlVersion}/js/caesarCipher`]: {
+                post: {
+                    tags: ['JS_DSA'],
+                    summary: 'Caesar Cipher Encryption/Decryption',
+                    description: 'This API performs Caesar Cipher encryption or decryption on strings or numbers based on the input type and shift value.',
+                    requestBody: {
+                        content: {
+                            'application/json': {
+                                schema: {
+                                    type: 'object',
+                                    properties: {
+                                        value: {
+                                            type: ['string', 'number'],
+                                            example: 'HELLO',
+                                            description: 'Input value to encrypt or decrypt. Can be a string or a number.',
+                                        },
+                                        type: {
+                                            type: 'string',
+                                            enum: ['encrypt', 'decrypt'],
+                                            example: 'encrypt',
+                                            description: 'Specify whether to encrypt or decrypt the input.',
+                                        },
+                                        shift: {
+                                            type: 'number',
+                                            example: 3,
+                                            description: 'The shift value used for the Caesar Cipher. Defaults to 13 if not provided.',
+                                        },
+                                    },
+                                    required: ['value', 'type', 'shift'],
+                                },
+                                examples: {
+                                    encryption_string: {
+                                        summary: 'Encryption Example with String',
+                                        value: {
+                                            value: 'HELLO',
+                                            type: 'encrypt',
+                                            shift: 3,
+                                        },
+                                    },
+                                    decryption_string: {
+                                        summary: 'Decryption Example with String',
+                                        value: {
+                                            value: 'KHOOR',
+                                            type: 'decrypt',
+                                            shift: 3,
+                                        },
+                                    },
+                                    encryption_number: {
+                                        summary: 'Encryption Example with Number',
+                                        value: {
+                                            value: 1234,
+                                            type: 'encrypt',
+                                            shift: 2,
+                                        },
+                                    },
+                                    decryption_number: {
+                                        summary: 'Decryption Example with Number',
+                                        value: {
+                                            value: 5678,
+                                            type: 'decrypt',
+                                            shift: 2,
+                                        },
+                                    },
+                                },
+                            },
+                        },
+                    },
+                    responses: {
+                        '200': {
+                            description: 'Success',
+                            content: {
+                                'application/json': {
+                                    schema: {
+                                        type: 'object',
+                                        properties: {
+                                            status: {
+                                                type: 'boolean',
+                                                example: true,
+                                                description: 'Indicates if the API operation was successful.',
+                                            },
+                                            message: {
+                                                type: 'string',
+                                                example: 'Data received successfully',
+                                                description: 'Success message from the API.',
+                                            },
+                                            data: {
+                                                type: 'object',
+                                                properties: {
+                                                    input: {
+                                                        type: ['string', 'number'],
+                                                        example: 'HELLO',
+                                                        description: 'The original input value.',
+                                                    },
+                                                    caesar_cipher_encrypt: {
+                                                        type: 'string',
+                                                        example: 'KHOOR',
+                                                        description: 'Result of the Caesar Cipher encryption (if type is "encrypt").',
+                                                    },
+                                                    caesar_cipher_decrypt: {
+                                                        type: 'string',
+                                                        example: 'HELLO',
+                                                        description: 'Result of the Caesar Cipher decryption (if type is "decrypt").',
+                                                    },
+                                                    solvedTime: {
+                                                        type: 'string',
+                                                        example: '0.0450 ms',
+                                                        description: 'Time taken to process the operation.',
+                                                    },
+                                                },
+                                            },
+                                        },
+                                    },
+                                    examples: {
+                                        encrypt_response: {
+                                            summary: 'Encrypt Response Example',
+                                            value: {
+                                                status: true,
+                                                message: 'Data received successfully',
+                                                data: {
+                                                    input: 'HELLO',
+                                                    caesar_cipher_encrypt: 'KHOOR',
+                                                    solvedTime: '0.0450 ms',
+                                                },
+                                            },
+                                        },
+                                        decrypt_response: {
+                                            summary: 'Decrypt Response Example',
+                                            value: {
+                                                status: true,
+                                                message: 'Data received successfully',
+                                                data: {
+                                                    input: 'KHOOR',
+                                                    caesar_cipher_decrypt: 'HELLO',
+                                                    solvedTime: '0.0350 ms',
+                                                },
+                                            },
+                                        },
+                                    },
+                                },
+                            },
+                        },
+                        '400': {
+                            description: 'Bad Request',
+                            content: {
+                                'application/json': {
+                                    example: {
+                                        status: false,
+                                        message: 'Bad Request Need To Provide a valid value in the request body',
+                                    },
+                                },
+                            },
+                        },
+                        '500': {
+                            description: 'Server Side Issue',
+                            content: {
+                                'application/json': {
+                                    example: {
+                                        status: false,
+                                        message: 'Internal Server Error',
+                                    },
+                                },
+                            },
+                        },
+                    },
+                },
             },
         },
         tags: [

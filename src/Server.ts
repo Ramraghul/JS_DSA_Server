@@ -113,7 +113,7 @@ app.use(
 // Start the server
 app.listen(advancedConfig.port, () => {
     console.log(`Server is running on ${chalk.blueBright(`http://localhost:${advancedConfig.port}`)}`);
-    console.log(`Swagger Doc running on ${chalk.yellowBright(`http://localhost:${advancedConfig.port}/api_doc`)}`);
+    console.log(`Swagger Doc running on ${chalk.yellowBright(`http://localhost:${advancedConfig.port}`)}`);
     console.log(`Your API Token Is ${chalk.magentaBright(Token)}`);
     console.log(`Press ${chalk.redBright('Ctrl + C')} to Stop this Server`);
 });
