@@ -11,4 +11,7 @@ route.post('/romanNumeral', JsController.romanNumeral);
 
 //Caesar Cipher Encryption and Decryption;
 route.post('/caesarCipher', JsController.caesarCipher);
+
+//Find The Second Largest Number In Array
+route.post('/secondLargest', JsController.secondLargest);
 export default route;

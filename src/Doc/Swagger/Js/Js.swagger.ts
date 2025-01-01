@@ -402,7 +402,7 @@ const option = {
                                 'application/json': {
                                     example: {
                                         status: false,
-                                        message: 'Bad Request Need To Provide a valid value in the request body',
+                                        message: 'Bad Request: Need to provide a valid value in the request body',
                                     },
                                 },
                             },
@@ -421,6 +421,115 @@ const option = {
                     },
                 },
             },
+            [`/${BaseUrlVersion}/js/secondLargest`]: {
+                post: {
+                    tags: ['JS_DSA'],
+                    summary: 'Find the Second Largest Number in an Array',
+                    description: 'This API finds the second largest number in a given array of numbers. It returns the second largest number or an error if the array does not meet the requirements.',
+                    requestBody: {
+                        content: {
+                            'application/json': {
+                                schema: {
+                                    type: 'object',
+                                    properties: {
+                                        numbers: {
+                                            type: 'array',
+                                            items: {
+                                                type: 'number',
+                                            },
+                                            example: [12, 35, 1, 10, 34, 1],
+                                            description: 'An array of numbers to find the second largest number from.',
+                                        },
+                                    },
+                                    required: ['numbers'],
+                                },
+                                examples: {
+                                    valid_input: {
+                                        summary: 'Valid Example with Array of Numbers',
+                                        value: {
+                                            numbers: [12, 35, 1, 10, 34, 1],
+                                        },
+                                    },
+                                },
+                            },
+                        },
+                    },
+                    responses: {
+                        '200': {
+                            description: 'Success',
+                            content: {
+                                'application/json': {
+                                    schema: {
+                                        type: 'object',
+                                        properties: {
+                                            status: {
+                                                type: 'boolean',
+                                                example: true,
+                                                description: 'Indicates if the API operation was successful.',
+                                            },
+                                            message: {
+                                                type: 'string',
+                                                example: 'Second largest number found successfully.',
+                                                description: 'Success message from the API.',
+                                            },
+                                            data: {
+                                                type: 'object',
+                                                properties: {
+                                                    secondLargest: {
+                                                        type: 'number',
+                                                        example: 34,
+                                                        description: 'The second largest number in the array.',
+                                                    },
+                                                    solvedTime: {
+                                                        type: 'string',
+                                                        example: '0.0450 ms',
+                                                        description: 'Time taken to process the operation.',
+                                                    },
+                                                },
+                                            },
+                                        },
+                                    },
+                                    examples: {
+                                        valid_response: {
+                                            summary: 'Second Largest Number Found Successfully',
+                                            value: {
+                                                status: true,
+                                                message: 'Second largest number found successfully.',
+                                                data: {
+                                                    secondLargest: 34,
+                                                    solvedTime: '0.0450 ms',
+                                                },
+                                            },
+                                        },
+                                    },
+                                },
+                            },
+                        },
+                        '400': {
+                            description: 'Bad Request',
+                            content: {
+                                'application/json': {
+                                    example: {
+                                        status: false,
+                                        message: 'Bad Request: The array must have at least two numbers.',
+                                    },
+                                },
+                            },
+                        },
+                        '500': {
+                            description: 'Server Side Issue',
+                            content: {
+                                'application/json': {
+                                    example: {
+                                        status: false,
+                                        message: 'Internal Server Error',
+                                    },
+                                },
+                            },
+                        },
+                    },
+                },
+            }
         },
         tags: [
             {
